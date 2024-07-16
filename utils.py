@@ -1,0 +1,15 @@
+categories = [
+    "Groceries",
+    "Travel",
+    "Shopping",
+    "Utilities",
+    "Fun",
+    "Cash",
+    "Eating out",
+    "Single",
+    "Medical",
+    "Investment",
+    "Rent",
+    "Experiments",
+    "Gift",
+]
