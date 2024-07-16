@@ -33,6 +33,7 @@ def authenticate():
 
 
 def create_service():
+    st.write("Authenticate")
     creds = authenticate()
     try:
         service = build("sheets", "v4", credentials=creds)
@@ -52,6 +53,7 @@ def create_sheet(service, title):
 
 
 def upload_main():
+    st.write("Creating service")
     service = create_service()
     if service:
         spreadsheet_id = create_sheet(service, "Test Sheet")
