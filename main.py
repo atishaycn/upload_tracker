@@ -3,6 +3,7 @@ import streamlit as st
 import sys
 from utils import categories
 from upload_test import upload_main
+from tempfile import NamedTemporaryFile
 
 debug = len(sys.argv) > 1 and sys.argv[1] == "debug"
 
@@ -34,7 +35,10 @@ def show_upload_input():
     credentials_file = st.file_uploader("Upload credentials.json", type="json")
     if upload_button and credentials_file:
         credentials_json = json.load(credentials_file)
-        upload_main(credentials_json)
+        with NamedTemporaryFile(delete=False, suffix=".json") as temp_credentials_file:
+            temp_credentials_file.write(credentials_file.getbuffer())
+            temp_credentials_file_path = temp_credentials_file.name
+        upload_main(temp_credentials_file_path)
 
 
 def main():
