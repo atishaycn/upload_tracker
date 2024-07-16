@@ -15,6 +15,7 @@ SCOPES = [
 
 
 def authenticate(credentials_json):
+    st.write("read flow")
     creds = None
     # Check if token.pickle file exists
     if os.path.exists("token.pickle"):
@@ -34,6 +35,7 @@ def authenticate(credentials_json):
 
 
 def create_service(credentials_json):
+    st.write("authenticate")
     creds = authenticate(credentials_json)
     try:
         service = build("sheets", "v4", credentials=creds)
