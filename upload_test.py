@@ -14,7 +14,7 @@ SCOPES = [
 ]
 
 
-def authenticate():
+def authenticate(credentials_json):
     creds = None
     # Check if token.pickle file exists
     if os.path.exists("token.pickle"):
@@ -25,7 +25,7 @@ def authenticate():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(credentials_json, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.pickle", "wb") as token:
@@ -33,9 +33,8 @@ def authenticate():
     return creds
 
 
-def create_service():
-    st.write("Authenticate")
-    creds = authenticate()
+def create_service(credentials_json):
+    creds = authenticate(credentials_json)
     try:
         service = build("sheets", "v4", credentials=creds)
         return service
@@ -53,8 +52,9 @@ def create_sheet(service, title):
     return spreadsheet.get("spreadsheetId")
 
 
-def upload_main():
+def upload_main(credentials_json):
     st.write("Creating service")
-    service = create_service()
+
+    service = create_service(credentials_json)
     if service:
         spreadsheet_id = create_sheet(service, "Test Sheet")

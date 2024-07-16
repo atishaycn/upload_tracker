@@ -1,3 +1,4 @@
+import json
 import streamlit as st
 import sys
 from utils import categories
@@ -5,7 +6,7 @@ from upload_test import upload_main
 
 debug = len(sys.argv) > 1 and sys.argv[1] == "debug"
 
-st.set_page_config(page_title="Financial Upload", page_icon="💵", layout="wide")
+st.set_page_config(page_title="Upload Expenses", page_icon="💵", layout="wide")
 
 
 def show_upload_input():
@@ -30,8 +31,10 @@ def show_upload_input():
         "Self Amount": self_amount,
     }
     upload_button = st.button(label="Upload")
-    if upload_button:
-        upload_main()
+    credentials_file = st.file_uploader("Upload credentials.json", type="json")
+    if upload_button and credentials_file:
+        credentials_json = json.load(credentials_file)
+        upload_main(credentials_json)
 
 
 def main():
