@@ -2,7 +2,7 @@ import json
 import streamlit as st
 import sys
 from utils import categories, monthly_gids
-from upload_test import upload_main
+from upload import upload_main
 from tempfile import NamedTemporaryFile
 from datetime import datetime
 
@@ -17,13 +17,9 @@ def show_upload_input():
     selected_sheet = st.selectbox("GID:", selected_sheet_options)
 
     gid_input = int(monthly_gids[selected_sheet])
-    # st.write(gid_input)
     category = st.selectbox("Select a category", categories)
 
-    # Description input
     description = st.text_input("Description")
-
-    # Amount input
     amount = st.number_input("Amount", min_value=0.0, step=0.01)
     share = st.number_input("Share", min_value=1.0, step=0.5)
     self_amount = amount / share
