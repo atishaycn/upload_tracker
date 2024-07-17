@@ -20,8 +20,8 @@ def show_upload_input():
     category = st.selectbox("Select a category", categories)
 
     description = st.text_input("Description")
-    amount = float(st.text_input("Amount"))
-    share = float(st.text_input("Share"))
+    amount = float(st.text_input("Amount", value=0))
+    share = float(st.text_input("Share", value=1))
     self_amount = round(amount / share, 2)
     st.write("Self Amount is", self_amount)
     today = datetime.today()
@@ -35,7 +35,7 @@ def show_upload_input():
         "Total Amount": amount,
         "Self Amount": self_amount,
     }
-    upload_button = st.button(label="UploadB")
+    upload_button = st.button(label="Upload")
     if upload_button:
         upload_main(gid_input, data)
 
