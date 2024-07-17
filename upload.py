@@ -79,11 +79,11 @@ def append_row_to_sheet(service, spreadsheet_id, range_name, data):
 
 def upload_main(gid_input, data):
 
-    with open("secrets.toml", "r") as file:
-        config = toml.load(file)
+    # with open("secrets.toml", "r") as file:
+    # config = toml.load(file)
 
-    google_credentials = config["google_credentials"]
-    # google_credentials = st.secrets["google_credentials"]
+    # google_credentials = config["google_credentials"]
+    google_credentials = st.secrets["google_credentials"]
 
     credentials = service_account.Credentials.from_service_account_info(
         google_credentials,
