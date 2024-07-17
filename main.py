@@ -22,6 +22,7 @@ def show_upload_input():
     description = st.text_input("Description")
     amount = float(st.text_input("Amount", value=0))
     share = float(st.text_input("Share", value=1))
+    split = st.selectbox("Split?", ["Yes", "No"])
     self_amount = round(amount / share, 2)
     st.write("Self Amount is", self_amount)
     today = datetime.today()
@@ -34,6 +35,7 @@ def show_upload_input():
         "Share": share,
         "Total Amount": amount,
         "Self Amount": self_amount,
+        "Split": split,
     }
     upload_button = st.button(label="Upload")
     if upload_button:
