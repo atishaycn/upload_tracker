@@ -44,21 +44,6 @@ def get_sheet_name_from_gid(service, spreadsheet_id, gid):
     return None
 
 
-# def append_row_to_sheet(service, spreadsheet_id, range_name, values):
-#     body = {"values": values}
-#     result = (
-#         service.spreadsheets()
-#         .values()
-#         .append(
-#             spreadsheetId=spreadsheet_id,
-#             range=range_name,
-#             valueInputOption="RAW",
-#             insertDataOption="INSERT_ROWS",
-#             body=body,
-#         )
-#         .execute()
-#     )
-#     return result
 def append_row_to_sheet(service, spreadsheet_id, range_name, data):
     values = [list(data.values())]
     body = {"values": values}
@@ -80,7 +65,7 @@ def append_row_to_sheet(service, spreadsheet_id, range_name, data):
 def upload_main(gid_input, data):
 
     # with open("secrets.toml", "r") as file:
-    # config = toml.load(file)
+    #     config = toml.load(file)
 
     # google_credentials = config["google_credentials"]
     google_credentials = st.secrets["google_credentials"]
@@ -92,9 +77,9 @@ def upload_main(gid_input, data):
 
     credentials.refresh(Request())
 
-    access_token = credentials.token
+    # access_token = credentials.token
 
-    authed_session = AuthorizedSession(credentials)
+    # authed_session = AuthorizedSession(credentials)
 
     drive_service = build("drive", "v3", credentials=credentials)
     sheet_service = build("sheets", "v4", credentials=credentials)
@@ -102,11 +87,9 @@ def upload_main(gid_input, data):
     st.write(get_doc_name(drive_service, sheet_id))
     sheet_name = get_sheet_name_from_gid(sheet_service, sheet_id, gid_input)
     st.write(sheet_name)
-    range_name = "A:F"
+    range_name = "A:G"
     if sheet_name:
         full_range = f"{sheet_name}!{range_name}"
-        # new_data = "12/09/2022,Utilities,football,1,104,201,AmEx"
-        # values = [new_data.split(",")]
         result = append_row_to_sheet(sheet_service, sheet_id, full_range, data)
         st.write(f"Row appended. Updated range: {result['updates']['updatedRange']}")
     # values = [new_row_data.split(",")]
