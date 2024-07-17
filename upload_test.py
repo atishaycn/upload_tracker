@@ -1,3 +1,5 @@
+from google.oauth2 import service_account
+from google.auth.transport.requests import AuthorizedSession
 import pandas as pd
 import os
 import pickle
@@ -10,7 +12,7 @@ from googleapiclient.errors import HttpError
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive",
 ]
 
 
@@ -26,6 +28,7 @@ def authenticate(credentials_json):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
+            st.write("starting flow")
             flow = InstalledAppFlow.from_client_secrets_file(credentials_json, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
@@ -54,9 +57,52 @@ def create_sheet(service, title):
     return spreadsheet.get("spreadsheetId")
 
 
-def upload_main(credentials_json):
-    st.write("Creating service")
+def get_doc_name(drive_service, doc_id):
+    results = (
+        drive_service.files()
+        .list(pageSize=10, fields="nextPageToken, files(id, name)")
+        .execute()
+    )
+    items = results.get("files", [])
 
-    service = create_service(credentials_json)
-    if service:
-        spreadsheet_id = create_sheet(service, "Test Sheet")
+    if not items:
+        print("No files found.")
+        return
+    for item in items:
+        if item["id"] == doc_id:
+            return item["name"]
+
+
+import json
+import toml
+
+
+def upload_main():
+    # google_credentials = st.secrets["google_credentials"]
+    with open("secrets.toml", "r") as file:
+        config = toml.load(file)
+
+    google_credentials = config["google_credentials"]
+
+    # Load the credentials from the dictionary
+    credentials = service_account.Credentials.from_service_account_info(
+        google_credentials,
+        scopes=SCOPES,
+    )
+
+    credentials.refresh(Request())
+
+    access_token = credentials.token
+
+    authed_session = AuthorizedSession(credentials)
+
+    drive_service = build("drive", "v3", credentials=credentials)
+    sheet_service = build("sheets", "v4", credentials=credentials)
+
+    st.write(
+        get_doc_name(drive_service, "1SCx92DH3-EUUJ0M7EcOlfqJ5LmOXPUh7CeZQ3hx4s14")
+    )
+    # service = create_service(credentials_json)
+    # st.write("service created")
+    # if service:
+    # spreadsheet_id = create_sheet(service, "Test Sheet")

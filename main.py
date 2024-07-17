@@ -31,14 +31,9 @@ def show_upload_input():
         "Share": share,
         "Self Amount": self_amount,
     }
-    upload_button = st.button(label="Upload")
-    credentials_file = st.file_uploader("Upload credentials.json", type="json")
-    if upload_button and credentials_file:
-        credentials_json = json.load(credentials_file)
-        with NamedTemporaryFile(delete=False, suffix=".json") as temp_credentials_file:
-            temp_credentials_file.write(credentials_file.getbuffer())
-            temp_credentials_file_path = temp_credentials_file.name
-        upload_main(temp_credentials_file_path)
+    upload_button = st.button(label="UploadB")
+    if upload_button:
+        upload_main()
 
 
 def main():
