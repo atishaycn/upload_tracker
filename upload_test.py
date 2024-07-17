@@ -78,11 +78,8 @@ import toml
 
 
 def upload_main():
-    # google_credentials = st.secrets["google_credentials"]
-    with open("secrets.toml", "r") as file:
-        config = toml.load(file)
-
-    google_credentials = config["google_credentials"]
+    # config = st.secrets["google_credentials"]
+    google_credentials = st.secrets["google_credentials"]
 
     # Load the credentials from the dictionary
     credentials = service_account.Credentials.from_service_account_info(
