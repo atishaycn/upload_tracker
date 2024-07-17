@@ -1,15 +1,15 @@
 categories = [
     "Groceries",
     "Travel",
-    "Shopping",
+    "Eating out",
     "Utilities",
+    "Shopping",
+    "Rent",
     "Fun",
     "Cash",
-    "Eating out",
     "Single",
     "Medical",
     "Investment",
-    "Rent",
     "Experiments",
     "Gift",
 ]
