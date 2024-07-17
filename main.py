@@ -20,9 +20,9 @@ def show_upload_input():
     category = st.selectbox("Select a category", categories)
 
     description = st.text_input("Description")
-    amount = st.number_input("Amount", min_value=0.0, step=0.01)
-    share = st.number_input("Share", min_value=1.0, step=0.5)
-    self_amount = amount / share
+    amount = float(st.text_input("Amount"))
+    share = float(st.text_input("Share"))
+    self_amount = round(amount / share, 2)
     st.write("Self Amount is", self_amount)
     today = datetime.today()
     formatted_date = today.strftime("%d/%m/%Y")
